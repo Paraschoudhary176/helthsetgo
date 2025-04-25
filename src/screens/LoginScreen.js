@@ -8,10 +8,12 @@ import {
   Alert,
   Image,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('user@test.com');
   const [password, setPassword] = useState('123456');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     if (email === 'user@test.com' && password === '123456') {
@@ -25,17 +27,58 @@ export default function LoginScreen({navigation}) {
     <View style={styles.container}>
       <Image source={require('../assets/logo.jpg')} style={styles.logo} />
       <Text style={styles.title}>Welcome to HealthSetGo</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        onChangeText={setPassword}
-      />
+
+      {/* Email Input with Icon */}
+      <View style={styles.inputContainer}>
+        <Image
+          source={require('../assets/email.png')}
+          style={{
+            height: 20,
+            width: 20,
+            resizeMode: 'contain',
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={setEmail}
+          value={email}
+        />
+      </View>
+
+      {/* Password Input with Eye Toggle */}
+      <View style={styles.inputContainer}>
+        <Image
+          source={require('../assets/padlock.png')}
+          style={{
+            height: 20,
+            width: 20,
+            resizeMode: 'contain',
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry={!showPassword}
+          onChangeText={setPassword}
+          value={password}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <Image
+            source={
+              showPassword
+                ? require('../assets/show.png')
+                : require('../assets/hide.png')
+            }
+            style={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -50,33 +93,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  logo: {
-    width: 500,
-    height: 200,
-    marginBottom: 20,
-    resizeMode: 'contain',
-    top: -10,
-  },
+  logo: {width: 120, height: 120, marginBottom: 20, resizeMode: 'contain'},
   title: {
     fontSize: 26,
     marginBottom: 20,
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  input: {
-    width: '100%',
+
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    padding: 10,
+    paddingHorizontal: 10,
     marginVertical: 10,
+    width: '100%',
   },
+  icon: {marginRight: 5},
+  input: {
+    flex: 1,
+    paddingVertical: 10,
+  },
+  eyeIcon: {
+    marginLeft: 5,
+  },
+
   button: {
     backgroundColor: '#007bff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     width: '100%',
+    marginTop: 10,
   },
   buttonText: {color: 'white', fontWeight: 'bold'},
 });
